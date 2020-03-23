@@ -4,11 +4,38 @@
 
 {% block monTitre %} Listes des personnages {% endblock %}
 {% block body %}
-    <div >  <img src={{ asset("images/personnages/Marc.png") }}> </div>
-    <div>Pseudo :  {{pseudo}}</div>
-    <div> Age : {{age}}</div>
-    <div> Force :{{ carac.force }}</div>
-    <div> Agilité :{{ carac.agi }}</div>
-    <div> Intelligence :{{ carac.intel }}</div>
+
+    <table class="table">
+    <tr class="thead-dark"> </tr>
+        <th>Image</th>
+        <th>Nom</th>
+        <th>Age</th>
+        <th>Sexe</th>
+        <th>Force</th>
+        <th>Agilité</th>
+        <th>Intelligence</th>
+    <tr>
+        {% for player in players %}
+        <tr>
+            <td> <img src="{{ asset('images/personnages/'~player.nom~'.png') }}"</td>
+            <td> {{ player.nom }}</td>
+            <td> {{ player.age }}</td>
+            <td>{% if player.sexe  %}
+                    Homme
+                {% else  %}
+                    Femme
+                {% endif %}</td>
+            <td> {{ player.carac.force }}</td>
+            <td> {{ player.carac.agi }}</td>
+            <td> {{ player.carac.intel }}</td>
+
+
+
+
+        </tr>
+
+        {% endfor %}
+    </table>
+
 
 {% endblock %}
