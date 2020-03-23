@@ -18,7 +18,7 @@
         {% for player in players %}
         <tr>
             <td> <img src="{{ asset('images/personnages/'~player.nom~'.png') }}"</td>
-            <td> {{ player.nom }}</td>
+            <td> <a href="{{ path('afficher_personnage',{'nom':player.nom}) }}"> {{ player.nom }}</a> </td>
             <td> {{ player.age }}</td>
             <td>{% if player.sexe  %}
                     Homme
