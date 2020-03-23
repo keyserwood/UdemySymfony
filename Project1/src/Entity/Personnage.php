@@ -25,8 +25,13 @@ class Personnage
         $p2 = new Personnage("Milo", 21, true, ["force" => 5, "agi" => 2, "intel" => 2]);
         $p3 = new Personnage("Tya", 22, false, ["force" => 2, "agi" => 5, "intel" => 3]);
     }
-    public static function getPersonnageParNom(){
-
+    public static function getPersonnageParNom($nom){
+        foreach(self::$personnages as $perso)
+        {
+            if (strtolower($perso->nom) ==$nom ){
+                return $perso;
+            }
+        }
 
     }
 }
