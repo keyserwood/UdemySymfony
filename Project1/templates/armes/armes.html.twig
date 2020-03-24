@@ -15,7 +15,7 @@
             {% for arme in armes %}
         <tr>
             <td> <img src="{{ asset('images/armes/'~arme.nom~'.png') }}"></td>
-            <td> <a href="{{ path('afficher_personnage',{'nom':arme.nom |lower}) }}"> {{ arme.nom }}</a> </td>
+            <td> <a href="{{ path('afficher_armes',{'nom':arme.nom |lower}) }}"> {{ arme.nom }}</a> </td>
             <td> {{ arme.desc }}</td>
             <td> {{ arme.degat }}</td>
 
