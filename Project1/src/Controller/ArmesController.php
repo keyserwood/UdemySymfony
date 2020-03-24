@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Armes
+use App\Entity\Armes;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -22,7 +22,7 @@ class ArmesController extends AbstractController
     /**
      * @Route("/armes/{nom}", name="afficher_armes")
      */
-    public function afficher_personnage($nom) // Function index qui est lancé quand on appelle la route
+    public function afficher_armes($nom) // Function index qui est lancé quand on appelle la route
     {
         Armes::creerArmes();
         $arme =Armes::getArmesParNom($nom);
