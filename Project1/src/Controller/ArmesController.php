@@ -16,7 +16,7 @@ class ArmesController extends AbstractController
         // Transmettre un pseudos
         Armes::creerArmes();
         return $this->render('armes/armes.html.twig', [
-            "weapons"=> Armes::$armes
+            "armes"=> Armes::$armes
         ]); //renvoie l'affichage d'un fichier twig
     }
     /**
