@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Familles{% endblock %}
+{% block monTitre %}Voici les familles{% endblock %}
+{% block body %}
+    {% for famille in familles %}
+        <div class="row align-items-center">
+            <div class="col-auto">
+                <div>{{ famille.libelle }}</div>
+            </div>
+        </div>
+
+
+    {% endfor %}
+{% endblock %}
