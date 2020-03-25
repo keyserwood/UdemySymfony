@@ -3,5 +3,22 @@
 {% block title %}Affichage de l'animal{% endblock %}
 {% block monTitre %}Voici l'animal : {{ animal.nom }}{% endblock %}
 {% block body %}
+    <div class = "row align-items-center">
+        <div class ="col-2 text-center">
+            <img src ="{{ asset('images/'~animal.image) }}">
+        </div>
+        <div class="col-auto">
+            <div>Description : {{ animal.description }} </div>
+            <div>Poids : {{ animal.poids }}</div>
+            <div>Dangereux    :
+                {% if animal.dangereux %}
+                    <span class="badge badge-danger">OUI</span>
+                {% else %}
+                    <span class="badge badge-success">NON</span>
+                {% endif %}
+             </div>
+        </div>
+    </div>
+
 
 {% endblock %}
