@@ -54,9 +54,21 @@ class Animal
      */
     private $continents;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Dispose", mappedBy="animal")
+     */
+    private $personne;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Dispose", mappedBy="animal")
+     */
+    private $disposes;
+
     public function __construct()
     {
         $this->continents = new ArrayCollection();
+        $this->personne = new ArrayCollection();
+        $this->disposes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -159,6 +171,68 @@ class Animal
         if ($this->continents->contains($continent)) {
             $this->continents->removeElement($continent);
             $continent->removeAnimaux($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Dispose[]
+     */
+    public function getPersonne(): Collection
+    {
+        return $this->personne;
+    }
+
+    public function addPersonne(Dispose $personne): self
+    {
+        if (!$this->personne->contains($personne)) {
+            $this->personne[] = $personne;
+            $personne->setAnimal($this);
+        }
+
+        return $this;
+    }
+
+    public function removePersonne(Dispose $personne): self
+    {
+        if ($this->personne->contains($personne)) {
+            $this->personne->removeElement($personne);
+            // set the owning side to null (unless already changed)
+            if ($personne->getAnimal() === $this) {
+                $personne->setAnimal(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Dispose[]
+     */
+    public function getDisposes(): Collection
+    {
+        return $this->disposes;
+    }
+
+    public function addDispose(Dispose $dispose): self
+    {
+        if (!$this->disposes->contains($dispose)) {
+            $this->disposes[] = $dispose;
+            $dispose->setAnimal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDispose(Dispose $dispose): self
+    {
+        if ($this->disposes->contains($dispose)) {
+            $this->disposes->removeElement($dispose);
+            // set the owning side to null (unless already changed)
+            if ($dispose->getAnimal() === $this) {
+                $dispose->setAnimal(null);
+            }
         }
 
         return $this;
