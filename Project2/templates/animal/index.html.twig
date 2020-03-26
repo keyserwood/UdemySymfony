@@ -5,14 +5,18 @@
 {% block body %}
     {% for animal in animaux %}
         <div class="row align-items-center">
-            <div>
+            <div class="col-2 text-center">
              <img src="{{ asset('images/'~animal.image)}}">
             </div>
             <div class="col-auto">
                 <h2><a href="{{ path('afficher_animal',{'id':animal.id }) }}">{{ animal.nom }}</a></h2>
                 <div>{{ animal.description }}</div>
+                <div><a href ="{{ path('afficher_famille',{'id':animal.famille.id}) }}" class = "btn btn-primary">{{ animal.famille.libelle }}</a></div>
+                <div>{% for continent in animal.continents %}
+                    <a href="{{ path('afficher_continent',{'id':continent.id}) }}" class="btn btn-warning">{{ continent.libelle }}</a>
+                {% endfor %}
+                </div>
             </div>
-            <div><a href ="{{ path('afficher_famille',{'id':animal.famille.id}) }}" class = "btn btn-primary">{{ animal.famille.libelle }}</a></div>
         </div>
 
 
