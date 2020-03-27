@@ -19,12 +19,37 @@ class Aliment
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Nom;
+    private $nom;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $Prix;
+    private $prix;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $image;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $calorie;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $proteine;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $glucide;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $lipide;
 
     public function getId(): ?int
     {
@@ -33,24 +58,84 @@ class Aliment
 
     public function getNom(): ?string
     {
-        return $this->Nom;
+        return $this->nom;
     }
 
-    public function setNom(string $Nom): self
+    public function setNom(string $nom): self
     {
-        $this->Nom = $Nom;
+        $this->nom = $nom;
 
         return $this;
     }
 
     public function getPrix(): ?float
     {
-        return $this->Prix;
+        return $this->prix;
     }
 
-    public function setPrix(float $Prix): self
+    public function setPrix(float $prix): self
     {
-        $this->Prix = $Prix;
+        $this->prix = $prix;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getCalorie(): ?int
+    {
+        return $this->calorie;
+    }
+
+    public function setCalorie(int $calorie): self
+    {
+        $this->calorie = $calorie;
+
+        return $this;
+    }
+
+    public function getProteine(): ?float
+    {
+        return $this->proteine;
+    }
+
+    public function setProteine(float $proteine): self
+    {
+        $this->proteine = $proteine;
+
+        return $this;
+    }
+
+    public function getGlucide(): ?float
+    {
+        return $this->glucide;
+    }
+
+    public function setGlucide(float $glucide): self
+    {
+        $this->glucide = $glucide;
+
+        return $this;
+    }
+
+    public function getLipide(): ?float
+    {
+        return $this->lipide;
+    }
+
+    public function setLipide(float $lipide): self
+    {
+        $this->lipide = $lipide;
 
         return $this;
     }
