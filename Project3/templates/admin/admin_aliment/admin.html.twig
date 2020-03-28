@@ -4,8 +4,9 @@
 {% block monTitreAdmin %}Administration des aliments
 {% endblock %}
 {% block body %}
-    <table class="table">
-        <tr class="thead-dark"> </tr>
+    <a href="" class="btn btn-success m-2">Ajouter</a>
+    <table class="table m-2">
+        <tr class="table-dark">
         <th>Image</th>
         <th>Aliments</th>
         <th>Prix</th>
@@ -14,7 +15,7 @@
         <th>GLucides</th>
         <th>Lipides</th>
         <th>Actions</th>
-        <tr>
+        </tr>
             {% for aliment in aliments %}
         <tr>
             <td> <img src="{{asset('images/'~aliment.image)}}"  class="perso_imgAliment" ></td>
@@ -27,6 +28,9 @@
             <td>
                 <a href="" class="btn btn-primary">
                     Modifier
+                </a>
+                <a href="" class="btn btn-danger">
+                    Supprimer
                 </a>
             </td>
         </tr>
