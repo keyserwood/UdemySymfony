@@ -4,6 +4,12 @@
 {% block monTitreAdmin %}Administration des aliments
 {% endblock %}
 {% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+
+    {% endfor %}
     <a href="{{ path('admin_aliment_creation') }}" class="btn btn-success m-2">Ajouter</a>
     <table class="table m-2">
         <tr class="table-dark">

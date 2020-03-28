@@ -28,8 +28,6 @@ class AdminAlimentController extends AbstractController
      * @Route("/admin/aliment/{id}", name="admin_aliment_modification",methods="POST")
      */
     public function ajoutetModif(Aliment $aliment=null, Request $request, ManagerRegistry $managerRegistry)
-
-
     {
         if (!$aliment)
         {
@@ -40,9 +38,11 @@ class AdminAlimentController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
         {
+            $modif = $aliment->getId() !== null;
             $em = $managerRegistry->getManager();
             $em->persist($aliment);
             $em->flush();
+            $this->addFlash("success", ($modif)? "La modification a été effectuée" : "L'ajout a été effectué");
             return $this->redirectToRoute("admin_aliments");
         }
         return $this->render('admin/admin_aliment/modificationEtAjoutAliment.html.twig', [
@@ -62,9 +62,12 @@ class AdminAlimentController extends AbstractController
             $em = $managerRegistry->getManager();
             $em->remove($aliment);
             $em->flush();
+            $this->addFlash("success","La suppression a été effectuée");
+            return $this->redirectToRoute("admin_aliments");
+
+
         }
 
-        return $this->redirectToRoute("admin_aliments");
     }
 
 }
