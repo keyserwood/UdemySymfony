@@ -25,7 +25,7 @@ class AdminAlimentController extends AbstractController
     }
     /**
      * @Route("/admin/aliment/creation", name="admin_aliment_creation")
-     * @Route("/admin/aliment/{id}", name="admin_aliment_modification")
+     * @Route("/admin/aliment/{id}", name="admin_aliment_modification",methods="POST")
      */
     public function ajoutetModif(Aliment $aliment=null, Request $request, ManagerRegistry $managerRegistry)
 
@@ -51,4 +51,20 @@ class AdminAlimentController extends AbstractController
             "isModification"=> $aliment->getId() !== null
         ]);
     }
+    /**
+     * @Route("/admin/aliment/{id}", name="admin_aliment_suppression",methods="delete")
+     */
+    public function supression(Aliment $aliment=null, Request $request, ManagerRegistry $managerRegistry)
+
+
+    {
+        if($this->isCsrfTokenValid("SUP".$aliment->getId(),$request->get('_token'))){
+            $em = $managerRegistry->getManager();
+            $em->remove($aliment);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute("admin_aliments");
+    }
+
 }
