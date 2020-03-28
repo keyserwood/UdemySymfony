@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Aliments{% endblock %}
+{% block monTitreAdmin %}Administration des aliments
+{% endblock %}
+{% block body %}
+    <table class="table">
+        <tr class="thead-dark"> </tr>
+        <th>Image</th>
+        <th>Aliments</th>
+        <th>Prix</th>
+        <th>Calories</th>
+        <th>Proteines</th>
+        <th>GLucides</th>
+        <th>Lipides</th>
+        <th>Actions</th>
+        <tr>
+            {% for aliment in aliments %}
+        <tr>
+            <td> <img src="{{asset('images/'~aliment.image)}}"  class="perso_imgAliment" ></td>
+            <td> {{ aliment.nom }} </td>
+            <td> {{ aliment.prix}}</td>
+            <td>{{ aliment.calorie }}</td>
+            <td>{{ aliment.proteine }}</td>
+            <td>{{ aliment.glucide }}</td>
+            <td>{{ aliment.lipide }}</td>
+            <td>
+                <a href="" class="btn btn-primary">
+                    Modifier
+                </a>
+            </td>
+        </tr>
+
+        {% endfor %}
+    </table>
+{% endblock %}
