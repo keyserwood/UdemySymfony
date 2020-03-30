@@ -3,13 +3,9 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AlimentRepository")
- * @Vich\Uploadable
  */
 class Aliment
 {
@@ -22,7 +18,6 @@ class Aliment
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min=3,max=15,minMessage="Le nom doit faire 3 caractères au minimum",maxMessage="Le nom doit moins de 15 caractères")
      */
     private $nom;
 
@@ -33,30 +28,9 @@ class Aliment
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Range(min=0.1,max=100)
      */
     private $image;
 
-    /**
-     * @Vich\UploadableField(mapping="aliment_image",fileNameProperty="image")
-     */
-    private $imageFile;
-
-    public function getImageFile(): ?File
-    {
-        return $this->imageFile;
-    }
-    public function setImageFile(?File $imageFile = null): self
-    {
-        $this->imageFile = $imageFile;
-        return $this;
-
-//        if (null !== $imageFile) {
-//            // It is required that at least one field changes if you are using doctrine
-//            // otherwise the event listeners won't be called and the file is lost
-//            $this->updatedAt = new \DateTimeImmutable();
-//        }
-    }
     /**
      * @ORM\Column(type="integer")
      */
@@ -68,7 +42,7 @@ class Aliment
     private $proteine;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="float")
      */
     private $glucide;
 
@@ -165,7 +139,4 @@ class Aliment
 
         return $this;
     }
-
-
-
 }
