@@ -80,6 +80,14 @@ class Aliment
      */
     private $lipide;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Type", inversedBy="aliments")
+     */
+    private $type;
+
+
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -168,4 +176,17 @@ class Aliment
 
         return $this;
     }
+
+    public function getType(): ?Type
+    {
+        return $this->type;
+    }
+
+    public function setType(?Type $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
 }
