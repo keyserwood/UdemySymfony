@@ -35,7 +35,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  *
  * @internal since Symfony 4.3
  */
-abstract class AbstractPreAuthenticatedListener extends AbstractListener implements ListenerInterface
+abstract class AbstractPreAuthenticatedListener implements ListenerInterface
 {
     use LegacyListenerTrait;
 
@@ -52,39 +52,23 @@ abstract class AbstractPreAuthenticatedListener extends AbstractListener impleme
         $this->authenticationManager = $authenticationManager;
         $this->providerKey = $providerKey;
         $this->logger = $logger;
-
-        if (null !== $dispatcher && class_exists(LegacyEventDispatcherProxy::class)) {
-            $this->dispatcher = LegacyEventDispatcherProxy::decorate($dispatcher);
-        } else {
-            $this->dispatcher = $dispatcher;
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(Request $request): ?bool
-    {
-        try {
-            $request->attributes->set('_pre_authenticated_data', $this->getPreAuthenticatedData($request));
-        } catch (BadCredentialsException $e) {
-            $this->clearToken($e);
-
-            return false;
-        }
-
-        return true;
+        $this->dispatcher = LegacyEventDispatcherProxy::decorate($dispatcher);
     }
 
     /**
      * Handles pre-authentication.
      */
-    public function authenticate(RequestEvent $event)
+    public function __invoke(RequestEvent $event)
     {
         $request = $event->getRequest();
 
-        [$user, $credentials] = $request->attributes->get('_pre_authenticated_data');
-        $request->attributes->remove('_pre_authenticated_data');
+        try {
+            list($user, $credentials) = $this->getPreAuthenticatedData($request);
+        } catch (BadCredentialsException $e) {
+            $this->clearToken($e);
+
+            return;
+        }
 
         if (null !== $this->logger) {
             $this->logger->debug('Checking current security token.', ['token' => (string) $this->tokenStorage->getToken()]);

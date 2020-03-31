@@ -11,9 +11,10 @@
 
 namespace Symfony\Bundle\FrameworkBundle\Controller;
 
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Fig\Link\GenericLinkProvider;
+use Fig\Link\Link;
 use Psr\Container\ContainerInterface;
-use Psr\Link\LinkInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -27,13 +28,10 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\Stamp\StampInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\WebLink\EventListener\AddLinkHeaderListener;
-use Symfony\Component\WebLink\GenericLinkProvider;
 
 /**
  * Common features needed in controllers.
@@ -289,7 +287,7 @@ trait ControllerTrait
      *
      * @final
      */
-    protected function createNotFoundException(string $message = 'Not Found', \Throwable $previous = null): NotFoundHttpException
+    protected function createNotFoundException(string $message = 'Not Found', \Exception $previous = null): NotFoundHttpException
     {
         return new NotFoundHttpException($message, $previous);
     }
@@ -305,7 +303,7 @@ trait ControllerTrait
      *
      * @final
      */
-    protected function createAccessDeniedException(string $message = 'Access Denied.', \Throwable $previous = null): AccessDeniedException
+    protected function createAccessDeniedException(string $message = 'Access Denied.', \Exception $previous = null): AccessDeniedException
     {
         if (!class_exists(AccessDeniedException::class)) {
             throw new \LogicException('You can not use the "createAccessDeniedException" method if the Security component is not available. Try running "composer require symfony/security-bundle".');
@@ -337,13 +335,11 @@ trait ControllerTrait
     /**
      * Shortcut to return the Doctrine Registry service.
      *
-     * @return ManagerRegistry
-     *
      * @throws \LogicException If DoctrineBundle is not available
      *
      * @final
      */
-    protected function getDoctrine()
+    protected function getDoctrine(): ManagerRegistry
     {
         if (!$this->container->has('doctrine')) {
             throw new \LogicException('The DoctrineBundle is not registered in your application. Try running "composer require symfony/orm-pack".');
@@ -355,7 +351,7 @@ trait ControllerTrait
     /**
      * Get a user from the Security Token Storage.
      *
-     * @return UserInterface|object|null
+     * @return object|null
      *
      * @throws \LogicException If SecurityBundle is not available
      *
@@ -401,19 +397,18 @@ trait ControllerTrait
     /**
      * Dispatches a message to the bus.
      *
-     * @param object|Envelope  $message The message or the message pre-wrapped in an envelope
-     * @param StampInterface[] $stamps
+     * @param object|Envelope $message The message or the message pre-wrapped in an envelope
      *
      * @final
      */
-    protected function dispatchMessage($message, array $stamps = []): Envelope
+    protected function dispatchMessage($message): Envelope
     {
         if (!$this->container->has('messenger.default_bus')) {
             $message = class_exists(Envelope::class) ? 'You need to define the "messenger.default_bus" configuration option.' : 'Try running "composer require symfony/messenger".';
             throw new \LogicException('The message bus is not enabled in your application. '.$message);
         }
 
-        return $this->container->get('messenger.default_bus')->dispatch($message, $stamps);
+        return $this->container->get('messenger.default_bus')->dispatch($message);
     }
 
     /**
@@ -423,7 +418,7 @@ trait ControllerTrait
      *
      * @final
      */
-    protected function addLink(Request $request, LinkInterface $link)
+    protected function addLink(Request $request, Link $link)
     {
         if (!class_exists(AddLinkHeaderListener::class)) {
             throw new \LogicException('You can not use the "addLink" method if the WebLink component is not available. Try running "composer require symfony/web-link".');

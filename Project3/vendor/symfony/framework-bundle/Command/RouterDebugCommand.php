@@ -73,7 +73,7 @@ EOF
      *
      * @throws InvalidArgumentException When route does not exist
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
         $name = $input->getArgument('name');
@@ -105,8 +105,6 @@ EOF
                 'output' => $io,
             ]);
         }
-
-        return 0;
     }
 
     private function findRouteNameContaining(string $name, RouteCollection $routes): array

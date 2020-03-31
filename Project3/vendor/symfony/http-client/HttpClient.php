@@ -17,11 +17,13 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  * A factory to instantiate the best possible HTTP client for the runtime.
  *
  * @author Nicolas Grekas <p@tchwork.com>
+ *
+ * @experimental in 4.3
  */
 final class HttpClient
 {
     /**
-     * @param array $defaultOptions     Default request's options
+     * @param array $defaultOptions     Default requests' options
      * @param int   $maxHostConnections The maximum number of connections to a single host
      * @param int   $maxPendingPushes   The maximum number of pushed responses to accept in the queue
      *
@@ -38,15 +40,5 @@ final class HttpClient
         }
 
         return new NativeHttpClient($defaultOptions, $maxHostConnections);
-    }
-
-    /**
-     * Creates a client that adds options (e.g. authentication headers) only when the request URL matches the provided base URI.
-     */
-    public static function createForBaseUri(string $baseUri, array $defaultOptions = [], int $maxHostConnections = 6, int $maxPendingPushes = 50): HttpClientInterface
-    {
-        $client = self::create([], $maxHostConnections, $maxPendingPushes);
-
-        return ScopingHttpClient::forBaseUri($client, $baseUri, $defaultOptions);
     }
 }

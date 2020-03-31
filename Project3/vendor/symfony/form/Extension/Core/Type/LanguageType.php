@@ -42,19 +42,16 @@ class LanguageType extends AbstractType implements ChoiceLoaderInterface
         $resolver->setDefaults([
             'choice_loader' => function (Options $options) {
                 $choiceTranslationLocale = $options['choice_translation_locale'];
-                $alpha3 = $options['alpha3'];
 
-                return new IntlCallbackChoiceLoader(function () use ($choiceTranslationLocale, $alpha3) {
-                    return array_flip($alpha3 ? Languages::getAlpha3Names($choiceTranslationLocale) : Languages::getNames($choiceTranslationLocale));
+                return new IntlCallbackChoiceLoader(function () use ($choiceTranslationLocale) {
+                    return array_flip(Languages::getNames($choiceTranslationLocale));
                 });
             },
             'choice_translation_domain' => false,
             'choice_translation_locale' => null,
-            'alpha3' => false,
         ]);
 
         $resolver->setAllowedTypes('choice_translation_locale', ['null', 'string']);
-        $resolver->setAllowedTypes('alpha3', 'bool');
     }
 
     /**
@@ -62,7 +59,7 @@ class LanguageType extends AbstractType implements ChoiceLoaderInterface
      */
     public function getParent()
     {
-        return ChoiceType::class;
+        return __NAMESPACE__.'\ChoiceType';
     }
 
     /**
