@@ -16,10 +16,18 @@ Page Administration
             {% for type in types %}
                 <tr>
                     <td>  <img src="{{ asset('images/types/'~type.image) }}" class="perso_imgAliment">    </td>
-                    <td>{{ type.libelle }}</td>
+                    <td><h1 style="font-size: 20px">{{ type.libelle }}</h1></td>
                     <td>
-                    <a href="" class="btn btn-primary">Modifier</a>
-                    <a href="" class="btn btn-danger">Supprimer</a>
+                        <form method="POST" style="display:inline-block" action="{{ path('admin_type_modification',{'id' : type.id}) }}" >
+                            <input  type="hidden" name="_method" value="POST">
+                            <input type="submit" class="btn btn-primary" value="Modifier">
+                        </form>
+
+                        <form method="POST" style="display:inline-block" action="{{ path('admin_type_suppression',{'id': type.id}) }}" onsubmit="return confirm('Confirmer la suppression')">
+                            <input  type="hidden" name="_method" value="delete">
+                            <input type="hidden" name="_token" value="{{csrf_token('SUP'~type.id)}}">
+                            <input type="submit" class="btn btn-danger" value="Supprimer">
+                        </form>
                     </td>
                 </tr>
             {% endfor %}
