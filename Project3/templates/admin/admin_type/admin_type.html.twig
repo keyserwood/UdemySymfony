@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Type{% endblock %}
+
+{% block body %}
+        <table>
+            <tr>
+                <td>Image</td>
+                <td>Nom</td>
+                <td>Actions</td>
+            </tr>
+            {% for type in types %}
+                <tr>
+                    <td>{{ type.image }}</td>
+                    <td>{{ type.libelle }}</td>
+                    <td>
+                    <a href="" class="btn btn-primary">Modifier</a>
+                    <a href="" class="btn btn-danger">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+        </table>
+{% endblock %}

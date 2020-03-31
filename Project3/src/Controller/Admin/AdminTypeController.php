@@ -2,18 +2,20 @@
 
 namespace App\Controller\Admin;
 
+use App\Repository\TypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AdminTypeController extends AbstractController
 {
     /**
-     * @Route("/admin/admin/type", name="admin_admin_type")
+     * @Route("/admin/type", name="admin_types")
      */
-    public function index()
+    public function index(TypeRepository $repository)
     {
-        return $this->render('admin/admin_type/index.html.twig', [
-            'controller_name' => 'AdminTypeController',
+        $types = $repository->findAll();
+        return $this->render('admin/admin_type/admin_type.html.twig', [
+            'types' => $types
         ]);
     }
 }
