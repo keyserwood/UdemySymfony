@@ -6,6 +6,7 @@ use App\Entity\Aliment;
 use App\Form\AlimentType;
 use App\Repository\AlimentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,9 +26,9 @@ class AdminAlimentController extends AbstractController
 
     /**
      * @Route("/admin/aliment/creation", name="admin_aliment_creation")
-     * @Route("/admin/aliment/{id}", name="admin_aliment_modification", methods="GET|POST")
+     * @Route("/admin/aliment/{id}", name="admin_aliment_modification", methods="POST")
      */
-    public function ajoutEtModif(Aliment $aliment = null, Request $request, ObjectManager $objectManager)
+    public function ajoutEtModif(Aliment $aliment = null, Request $request,  ManagerRegistry $managerRegistry)
     {
         if(!$aliment) {
             $aliment = new Aliment();
@@ -37,8 +38,11 @@ class AdminAlimentController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $objectManager->persist($aliment);
-            $objectManager->flush();
+            $modif = $aliment->getId() !== null;
+            $em = $managerRegistry->getManager();
+            $em->persist($aliment);
+            $em->flush();
+            $this->addFlash("success", ($modif)? "La modification a été effectuée" : "L'ajout a été effectué");
             return $this->redirectToRoute("admin_aliment");
         }
 
@@ -52,11 +56,17 @@ class AdminAlimentController extends AbstractController
      /**
      * @Route("/admin/aliment/{id}", name="admin_aliment_suppression", methods="delete")
      */
-    public function suppression(Aliment $aliment, Request $request, ObjectManager $objectManager){
-        if($this->isCsrfTokenValid("SUP". $aliment->getId(),$request->get('_token'))){
-            $objectManager->remove($aliment);
-            $objectManager->flush();
-            return $this->redirectToRoute("admin_aliment");
+    public function suppression(Aliment $aliment, Request $request,ManagerRegistry $managerRegistry){
+        if($this->isCsrfTokenValid("SUP".$aliment->getId(),$request->get('_token'))){
+
+            $em = $managerRegistry->getManager();
+            $em->remove($aliment);
+            $em->flush();
+            $this->addFlash("success","La suppression a été effectuée");
+            return $this->redirectToRoute("admin_aliments");
+
+
         }
+
     }
 }
