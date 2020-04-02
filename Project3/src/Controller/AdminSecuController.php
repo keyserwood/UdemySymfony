@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AdminSecuController extends AbstractController
 {
@@ -25,6 +26,7 @@ class AdminSecuController extends AbstractController
             $passwordCrypte = $encoder->encodePassword($utilisateur,$utilisateur->getPassword());
             $utilisateur->setPassword($passwordCrypte);
             $em = $managerRegistry->getManager();
+            $utilisateur->setRoles("ROLE_USER");
             $em->persist($utilisateur);
             $em->flush();
 //            $this->addFlash("success", "L'inscription a été effectuée");
@@ -38,8 +40,18 @@ class AdminSecuController extends AbstractController
     /**
      * @Route ("/login",name="connexion")
      */
-    public function login(){
-        return $this->render("admin_secu/login.html.twig");
+    public function login(AuthenticationUtils $utils){
+        return $this->render("admin_secu/login.html.twig",
+        [
+            "lastUserName"=> $utils->getLastUsername(),
+            "error" => $utils->getLastAuthenticationError()
+        ]);
+    }
+    /**
+     * @Route ("/deconnexion",name="deconnexion")
+     */
+    public function deconnexion()
+    {
     }
 }
 

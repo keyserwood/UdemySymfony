@@ -38,6 +38,11 @@ class Utilisateur implements UserInterface
      */
     private $verificationPassword;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $roles;
+
     public function getVerificationPassword(): ?string
     {
         return $this->verificationPassword;
@@ -90,6 +95,18 @@ class Utilisateur implements UserInterface
     }
     public function getRoles()
     {
-        return['ROLE_USER'];
+        return[$this->roles];
+    }
+
+    public function setRoles(?string $roles): self
+    {
+        if($roles === null)
+        {
+            $this->roles = "ROLE_USER";
+        }
+        else{
+            $this->roles = $roles;
+        }
+        return $this;
     }
 }
