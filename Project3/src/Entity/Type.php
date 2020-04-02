@@ -44,11 +44,11 @@ class Type
     {
         $this->imageFile = $imageFile;
 
-//        if (null !== $imageFile) {
-//            // It is required that at least one field changes if you are using doctrine
-//            // otherwise the event listeners won't be called and the file is lost
-//            $this->updatedAt = new \DateTimeImmutable();
-//        }
+        if ($this->imageFile instanceof UploadedFile)
+        {
+            $this->createdAt = new \DateTime('now');
+        }
+
         return $this;
 
     }
@@ -63,6 +63,11 @@ class Type
      */
 
     private $aliments;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $createdAt;
 
     public function __construct()
     {
@@ -91,7 +96,7 @@ class Type
         return $this->image;
     }
 
-    public function setImage(string $image): self
+    public function setImage(?string $image): self
     {
         $this->image = $image;
 
@@ -125,6 +130,18 @@ class Type
                 $aliment->setType(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }
