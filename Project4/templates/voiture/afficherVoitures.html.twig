@@ -4,6 +4,23 @@
 {% block monTitre %}Listes des voitures{% endblock %}
 
 {% block body %}
+    {{ form_start(form) }}
+    <div class="row  align-items text-center">
+        <div class="col">
+            {{ form_row(form.minAnnee) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.maxAnnee) }}
+        </div>
+        <div class="col-2">
+            <input type="submit" value="rechercher" class="btn btn-primary">
+        </div>
+    </div>
+
+    </div>
+    {{ form_widget(form) }}
+
+    {{ form_end(form) }}
     <div class="row no-gutters">
         {% for voiture in voitures %}
             <div class="col-12 col-lg-6 p-1">
@@ -28,5 +45,9 @@
             </div>
         {% endfor %}
     </div>
+    <div class="pagination">
+        {{ knp_pagination_render(voitures) }}
+    </div>
+
 
 {% endblock %}
