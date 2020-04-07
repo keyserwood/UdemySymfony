@@ -61,7 +61,7 @@ class AppFixtures extends Fixture
                 //XX1234XX
                 $voiture->setImmatriculation($faker->regexify("[A-Z]{2}[0-9]{3,4}[A-Z]{2}"))
                     ->setNbPortes($faker->randomElement($array = array(3,5))) // Soit 3 soit 5
-                    ->setAnnee($faker->numberBetween($min=1990,$max=2019)) 
+                    ->setAnnee($faker->numberBetween($min=1990,$max=2019))
                     ->setModele($m);
                 $manager->persist($voiture);
             }

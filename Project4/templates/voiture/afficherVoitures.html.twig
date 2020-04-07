@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gamos de la concession{% endblock %}
+
+{% block body %}
+    <div class="row col-12 p-2 m-2">
+
+        {% for voiture in voitures %}
+            <div class="card border-secondary mb-3" style="max-width: 20rem;">
+                <div class="card-header">{{ voiture.immatriculation }}</div>
+                <div class="card-body">
+                    <div class="col">
+                        <img src="{{ asset("/images/modeles/"~voiture.modele.image) }}" class="perso_imgVoiture">
+                    </div>
+                    <div class="col">
+                        <p>Modèle : {{ voiture.modele.libelle }}</p>
+                        <p>Marque : {{ voiture.modele.marque.libelle }}</p>
+                        <p>Nombre de portes :{{ voiture.nbPortes }}</p>
+                        <p>Prix Moyen : {{ voiture.modele.prixMoyen }}</p>
+                        <p>Année : {{ voiture.annee }}</p>
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+
+
+    </div>
+
+{% endblock %}
