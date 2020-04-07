@@ -15,20 +15,22 @@ class VoitureController extends AbstractController
     /**
      * @Route("/clients/voitures", name="voitures")
      */
-    public function afficherVoitures(VoitureRepository $repository, PaginatorInterface $paginatorInterface, Request $request)
+    public function index(VoitureRepository $repo,PaginatorInterface $paginatorInterface, Request $request)
     {
-        $recherchevoiture = new RechercheVoiture();
+        $rechercheVoiture = new RechercheVoiture();
 
-        $form =$this->createForm(RechercheVoitureType::class);
+        $form = $this->createForm(RechercheVoitureType::class,$rechercheVoiture);
         $form->handleRequest($request);
 
-        $voitures =  $paginatorInterface->paginate(
-            $repository->findAllWithPagination($recherchevoiture), /* query NOT result */
+        $voitures = $paginatorInterface->paginate(
+            $repo->findAllWithPagination($rechercheVoiture),
             $request->query->getInt('page', 1), /*page number*/
             6 /*limit per page*/
         );
-        return $this->render('voiture/afficherVoitures.html.twig', [
-            'voitures'=> $voitures,"form"=>$form->createView()
+        return $this->render('voiture/afficherVoitures.html.twig',[
+            "voitures" => $voitures,
+            "form" => $form->createView()
         ]);
     }
+
 }

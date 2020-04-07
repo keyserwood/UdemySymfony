@@ -23,14 +23,14 @@ class VoitureRepository extends ServiceEntityRepository
 
 
     public function findAllWithPagination(RechercheVoiture $rechercheVoiture) : Query{
-         $req = $this->createQueryBuilder('v');
-         if($rechercheVoiture ->getMinAnnee()){
-            $req = $req->andWhere('v.annee > :min')
+        $req = $this->createQueryBuilder('v');
+        if($rechercheVoiture->getMinAnnee()){
+            $req = $req->andWhere('v.annee >= :min')
                 ->setParameter(':min',$rechercheVoiture->getMinAnnee());
         }
         if($rechercheVoiture->getMaxAnnee()){
-            $req = $req->andWhere('v.annee < :max')
-                ->setParameters(':max',$rechercheVoiture->getMaxAnnee());
+            $req = $req->andWhere('v.annee <= :max')
+                ->setParameter(':max',$rechercheVoiture->getMaxAnnee());
         }
 
         return $req->getQuery();
