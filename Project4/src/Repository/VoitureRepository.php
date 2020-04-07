@@ -22,45 +22,47 @@ class VoitureRepository extends ServiceEntityRepository
     }
 
 
-    public function findAllWithPagination(RechercheVoiture $rechercheVoiture) : Query{
+    public function findAllWithPagination(RechercheVoiture $rechercheVoiture): Query
+    {
         $req = $this->createQueryBuilder('v');
-        if($rechercheVoiture->getMinAnnee()){
+        if ($rechercheVoiture->getMinAnnee()) {
             $req = $req->andWhere('v.annee >= :min')
-                ->setParameter(':min',$rechercheVoiture->getMinAnnee());
+                ->setParameter(':min', $rechercheVoiture->getMinAnnee());
         }
-        if($rechercheVoiture->getMaxAnnee()){
+        if ($rechercheVoiture->getMaxAnnee()) {
             $req = $req->andWhere('v.annee <= :max')
-                ->setParameter(':max',$rechercheVoiture->getMaxAnnee());
+                ->setParameter(':max', $rechercheVoiture->getMaxAnnee());
         }
 
         return $req->getQuery();
-    }
-    // /**
-    //  * @return Voiture[] Returns an array of Voiture objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Voiture
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        // /**
+        //  * @return Voiture[] Returns an array of Voiture objects
+        //  */
+        /*
+        public function findByExampleField($value)
+        {
+            return $this->createQueryBuilder('v')
+                ->andWhere('v.exampleField = :val')
+                ->setParameter('val', $value)
+                ->orderBy('v.id', 'ASC')
+                ->setMaxResults(10)
+                ->getQuery()
+                ->getResult()
+            ;
+        }
+        */
+
+        /*
+        public function findOneBySomeField($value): ?Voiture
+        {
+            return $this->createQueryBuilder('v')
+                ->andWhere('v.exampleField = :val')
+                ->setParameter('val', $value)
+                ->getQuery()
+                ->getOneOrNullResult()
+            ;
+        }
+        */
     }
-    */
 }
