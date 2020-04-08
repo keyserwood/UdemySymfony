@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\RechercheVoiture;
+use App\Entity\Voiture;
 use App\Form\RechercheVoitureType;
+use App\Form\VoitureType;
 use App\Repository\VoitureRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,6 +33,15 @@ class AdminController extends AbstractController
             "voitures" => $voitures,
             "form" => $form->createView(),"admin"=>true
         ]);
+    }
+    /**
+     * @Route("/admin/{id}", name="modifVoiture")
+     */
+    public function modification(Voiture $voiture){
+        $form = $this->createForm(VoitureType::class,$voiture);
+
+        return $this->render('admin/modification.html.twig',["voiture"=>$voiture,"form"=>$form->createView()]);
+
     }
 
 }
