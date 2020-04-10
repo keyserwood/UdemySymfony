@@ -7,6 +7,7 @@ use App\Entity\Voiture;
 use App\Form\RechercheVoitureType;
 use App\Form\VoitureType;
 use App\Repository\VoitureRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,11 +38,31 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/{id}", name="modifVoiture")
      */
-    public function modification(Voiture $voiture){
-        $form = $this->createForm(VoitureType::class,$voiture);
+    public function modification(Voiture $voiture=null,Request $request, ManagerRegistry $managerRegistry ){
 
-        return $this->render('admin/modification.html.twig',["voiture"=>$voiture,"form"=>$form->createView()]);
+        if(!$voiture)
+        {
+            $voiture=new Voiture();
+        }
+
+
+        $form = $this->createForm(VoitureType::class,$voiture);
+        $form->handleRequest($request);
+        if($form->isSubmitted()&& $form->isValid())
+        {
+            $modif=$voiture->getId()!==null;
+            $em = $managerRegistry->getManager();
+            $em->persist($voiture);
+            $em->flush();
+            $this->addFlash("success",($modif)?"La modification a été effectuée":"L'ajout a été effectué");
+            return $this->redirectToRoute("admin");
+
+        }
+
+        return $this->render('admin/modification.html.twig',
+            ["voiture"=>$voiture,"form"=>$form->createView()]);
+//        "isModification" => $type->getId() !== null
+
 
     }
-
 }

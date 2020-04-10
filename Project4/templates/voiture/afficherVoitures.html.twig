@@ -19,6 +19,11 @@
 
     {{form_end(form)}}
     <a href="" class="d-block btn btn-success">Ajouter</a>
+    {%  for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
 
     <div class="row no-gutters">
         {% for voiture in voitures %}
