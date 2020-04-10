@@ -18,7 +18,7 @@
     </div>
 
     {{form_end(form)}}
-    <a href="" class="d-block btn btn-success">Ajouter</a>
+    <a href="{{ path("creationVoiture") }}" class="d-block btn btn-success">Ajouter</a>
     {%  for message in app.flashes('success') %}
         <div class="alert alert-success">
             {{ message }}
@@ -49,7 +49,11 @@
                     <div class="row no-gutters">
                             <a href="{{ path("modifVoiture",{'id':voiture.id} ) }}" class="col btn btn-warning">Modifier</a>
 
-                            <a href="" class="col btn btn-danger">Supprimer</a>
+                            <form method="post" class="col" action="{{ path("supVoiture",{"id":voiture.id}) }}"  onsubmit="return confirm('Confirmer la suppression');">
+                                <input type="hidden" name="_method" value="SUP">
+                                <input type="hidden" name="_token" value="{{ csrf_token('SUP'~voiture.id) }}">
+                                <input type="submit" class="btn btn-danger w-100" value="Supprimer">
+                            </form>
                     </div>
                     {% endif %}
                 </div>

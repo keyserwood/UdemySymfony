@@ -7,6 +7,7 @@ use App\Entity\Voiture;
 use App\Form\RechercheVoitureType;
 use App\Form\VoitureType;
 use App\Repository\VoitureRepository;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,7 +37,8 @@ class AdminController extends AbstractController
         ]);
     }
     /**
-     * @Route("/admin/{id}", name="modifVoiture")
+     * @Route("/admin/creation",name="creationVoiture")
+     * @Route("/admin/{id}", name="modifVoiture",methods="GET")
      */
     public function modification(Voiture $voiture=null,Request $request, ManagerRegistry $managerRegistry ){
 
@@ -62,7 +64,20 @@ class AdminController extends AbstractController
         return $this->render('admin/modification.html.twig',
             ["voiture"=>$voiture,"form"=>$form->createView()]);
 //        "isModification" => $type->getId() !== null
-
+    }
+    /**
+     * @Route("/admin/{id}", name="supVoiture",methods="SUP")
+     */
+    public function suppression(Voiture $voiture,Request $request,ManagerRegistry $managerRegistry){
+        if($this->isCsrfTokenValid("SUP".$voiture->getId(),$request->get("_token"))){
+            $om =$managerRegistry->getManager();
+            $om->remove($voiture);
+            $om->flush();
+            $this->addFlash("success","La suppression a été effectuée");
+            return $this->redirectToRoute("admin");
+        }
 
     }
+
+
 }
